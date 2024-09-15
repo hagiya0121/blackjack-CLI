@@ -35,5 +35,17 @@ class Deck {
   }
 }
 
-const deck = new Deck();
-console.log(deck.cards);
+class Player {
+  constructor() {
+    this.hand = [];
+    this.money = 500;
+    this.bet = 0;
+  }
+}
+
+class Dealer {
+  constructor() {
+    this.hand = [];
+    this.publicCard = null;
+  }
+}
