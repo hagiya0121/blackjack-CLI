@@ -4,4 +4,9 @@ export default class Game {
     this.dealer = dealer;
     this.player = player;
   }
+
+  start() {
+    console.log("Game Start");
+    this.player.betting();
+  }
 }
