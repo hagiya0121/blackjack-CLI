@@ -5,8 +5,10 @@ export default class Game {
     this.player = player;
   }
 
-  start() {
+  async start() {
     console.log("Game Start");
-    this.player.betting();
+    await this.player.betting();
+    await this.dealer.hand.push(...this.deck.drawCard(2));
+    await this.player.hand.push(...this.deck.drawCard(2));
   }
 }
