@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "./bin/blackjack.js",
+  "type": "module",
   "bin": {
     "blackjack": "./bin/blackjack.js"
   },
