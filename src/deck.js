@@ -1,6 +1,6 @@
 import Card from "./card.js";
 
-const SUITS = ["heart", "diamond", "club", "spade"];
+const SUITS = ["♥", "♦", "♣", "♠"];
 const RANKS = [
   "2",
   "3",

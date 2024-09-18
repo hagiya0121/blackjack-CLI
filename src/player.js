@@ -3,7 +3,7 @@ import { select } from "@inquirer/prompts";
 export default class Player {
   constructor() {
     this.hand = [];
-    this.money = 500;
+    this.credit = 1000;
     this.bet = 0;
   }
 
@@ -25,6 +25,17 @@ export default class Player {
         },
       ],
     });
-    this.money -= this.bet;
+    this.credit -= this.bet;
+  }
+
+  calcTotalValue() {
+    const values = this.hand.map((card) => card.getValue());
+    let totalValue = values.reduce((acc, curr) => acc + curr);
+    let aceCount = values.filter((value) => value === 11).length;
+    while (totalValue > 21 && aceCount > 0) {
+      totalValue -= 10;
+      aceCount--;
+    }
+    return totalValue;
   }
 }
