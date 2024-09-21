@@ -7,7 +7,9 @@ export default class Game {
   }
 
   async start() {
-    await this.player.betting();
+    const betAmount = await this.commandLine.renderBetOptions();
+    this.player.setBetAmount(betAmount);
+
     for (let i = 0; i < 2; i++) {
       await this.dealer.hit(this.deck.drawCard());
       await this.player.hit(this.deck.drawCard());
@@ -23,7 +25,7 @@ export default class Game {
   }
 
   async takePlayerTurn() {
-    const action = await this.player.selectAction();
+    const action = await this.commandLine.renderActionOptions();
     switch (action) {
       case "hit":
         this.player.hit(this.deck.drawCard());

@@ -1,4 +1,5 @@
 import { styleText } from "node:util";
+import { select } from "@inquirer/prompts";
 
 export default class CommandLine {
   constructor(dealer, player) {
@@ -19,6 +20,46 @@ export default class CommandLine {
         `
       )
     );
+  }
+
+  renderBetOptions() {
+    return select({
+      message: "掛け金を選択してください",
+      choices: [
+        {
+          name: "$10",
+          value: 10,
+        },
+        {
+          name: "$50",
+          value: 50,
+        },
+        {
+          name: "$100",
+          value: 100,
+        },
+      ],
+    });
+  }
+
+  async renderActionOptions() {
+    return select({
+      message: "行動を選択してください",
+      choices: [
+        {
+          name: "HIT",
+          value: "hit",
+        },
+        {
+          name: "STAND",
+          value: "stand",
+        },
+        {
+          name: "DOUBLE",
+          value: "double",
+        },
+      ],
+    });
   }
 
   renderGameStatus() {

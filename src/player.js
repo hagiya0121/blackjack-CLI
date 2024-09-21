@@ -8,45 +8,9 @@ export default class Player {
     this.totalValue = 0;
   }
 
-  async betting() {
-    this.bet = await select({
-      message: "掛け金を選択してください",
-      choices: [
-        {
-          name: "$10",
-          value: 10,
-        },
-        {
-          name: "$50",
-          value: 50,
-        },
-        {
-          name: "$100",
-          value: 100,
-        },
-      ],
-    });
-    this.credit -= this.bet;
-  }
-
-  async selectAction() {
-    return select({
-      message: "行動を選択してください",
-      choices: [
-        {
-          name: "HIT",
-          value: "hit",
-        },
-        {
-          name: "STAND",
-          value: "stand",
-        },
-        {
-          name: "DOUBLE",
-          value: "double",
-        },
-      ],
-    });
+  setBetAmount(amount) {
+    this.bet = amount;
+    this.credit -= amount;
   }
 
   #calcTotalValue() {
