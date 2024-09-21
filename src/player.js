@@ -5,6 +5,7 @@ export default class Player {
     this.hand = [];
     this.credit = 1000;
     this.bet = 0;
+    this.totalValue = 0;
   }
 
   async betting() {
@@ -28,7 +29,27 @@ export default class Player {
     this.credit -= this.bet;
   }
 
-  calcTotalValue() {
+  async selectAction() {
+    return select({
+      message: "行動を選択してください",
+      choices: [
+        {
+          name: "HIT",
+          value: "hit",
+        },
+        {
+          name: "STAND",
+          value: "stand",
+        },
+        {
+          name: "DOUBLE",
+          value: "double",
+        },
+      ],
+    });
+  }
+
+  #calcTotalValue() {
     const values = this.hand.map((card) => card.getValue());
     let totalValue = values.reduce((acc, curr) => acc + curr);
     let aceCount = values.filter((value) => value === 11).length;
@@ -36,6 +57,18 @@ export default class Player {
       totalValue -= 10;
       aceCount--;
     }
-    return totalValue;
+    this.totalValue = totalValue;
+  }
+
+  hit(card) {
+    this.hand.push(card);
+    this.#calcTotalValue();
+  }
+
+  double(card) {
+    this.hand.push(card);
+    this.#calcTotalValue();
+    this.credit -= this.bet;
+    this.bet *= 2;
   }
 }
