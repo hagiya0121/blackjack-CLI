@@ -25,44 +25,40 @@ export default class CommandLine {
     );
   }
 
-  renderBetOptions() {
+  async renderSelect(message, names, values) {
+    const choices = names.map((name, index) => ({
+      name: name,
+      value: values[index],
+    }));
+
     return select({
-      message: "掛け金を選択してください",
-      choices: [
-        {
-          name: "$10",
-          value: 10,
-        },
-        {
-          name: "$50",
-          value: 50,
-        },
-        {
-          name: "$100",
-          value: 100,
-        },
-      ],
+      message: message,
+      choices: choices,
     });
   }
 
-  async renderActionOptions() {
-    return select({
-      message: "行動を選択してください",
-      choices: [
-        {
-          name: "HIT",
-          value: "hit",
-        },
-        {
-          name: "STAND",
-          value: "stand",
-        },
-        {
-          name: "DOUBLE",
-          value: "double",
-        },
-      ],
-    });
+  renderBetOptions() {
+    const betNames = ["$10", "$50", "$100"];
+    const betValues = [10, 50, 100];
+    return this.renderSelect("掛け金を選択してください", betNames, betValues);
+  }
+
+  renderActionOptions() {
+    const actionNames = ["HIT", "STAND"];
+    const actionValues = ["hit", "stand"];
+
+    if (
+      this.#player.hand.length === 2 &&
+      this.#player.credit >= this.#player.bet
+    ) {
+      actionNames.push("DOUBLE");
+      actionValues.push("double");
+    }
+    return this.renderSelect(
+      "行動を選択してください",
+      actionNames,
+      actionValues
+    );
   }
 
   renderGameStatus() {
