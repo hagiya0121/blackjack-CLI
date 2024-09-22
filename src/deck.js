@@ -18,13 +18,15 @@ const RANKS = [
 ];
 
 export default class Deck {
+  #cards = [];
+
   constructor() {
-    this.cards = this.#createCards();
+    this.#cards = this.#createCards();
   }
 
   drawCard() {
-    const randomIndex = Math.floor(Math.random() * this.cards.length);
-    return this.cards.splice(randomIndex, 1)[0];
+    const randomIndex = Math.floor(Math.random() * this.#cards.length);
+    return this.#cards.splice(randomIndex, 1)[0];
   }
 
   #createCards() {

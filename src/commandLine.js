@@ -2,9 +2,12 @@ import { styleText } from "node:util";
 import { select } from "@inquirer/prompts";
 
 export default class CommandLine {
+  #dealer = null;
+  #player = null;
+
   constructor(dealer, player) {
-    this.dealer = dealer;
-    this.player = player;
+    this.#dealer = dealer;
+    this.#player = player;
   }
 
   renderMessage(message) {
@@ -63,15 +66,15 @@ export default class CommandLine {
   }
 
   renderGameStatus() {
-    console.log(`CREDIT: ${this.player.credit}     BET: ${this.player.bet}`);
+    console.log(`CREDIT: ${this.#player.credit}     BET: ${this.#player.bet}`);
     console.log("----------------------------------");
     console.log("           DEALER");
-    console.log(this.renderCards(this.dealer.hand, true));
-    console.log(`TOTAL: ${this.dealer.totalValue}`);
+    console.log(this.renderCards(this.#dealer.hand, true));
+    console.log(`TOTAL: ${this.#dealer.totalValue}`);
     console.log("----------------------------------");
     console.log("           PLAYER");
-    console.log(this.renderCards(this.player.hand));
-    console.log(`TOTAL: ${this.player.totalValue}`);
+    console.log(this.renderCards(this.#player.hand));
+    console.log(`TOTAL: ${this.#player.totalValue}`);
     console.log("----------------------------------");
   }
 

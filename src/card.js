@@ -1,11 +1,22 @@
 export default class Card {
+  #suit = "";
+  #rank = "";
+
   constructor(suit, rank) {
-    this.suit = suit;
-    this.rank = rank;
+    this.#suit = suit;
+    this.#rank = rank;
+  }
+
+  get suit() {
+    return this.#suit;
+  }
+
+  get rank() {
+    return this.#rank;
   }
 
   getValue() {
-    switch (this.rank) {
+    switch (this.#rank) {
       case "A":
         return 11;
       case "J":
@@ -13,7 +24,7 @@ export default class Card {
       case "K":
         return 10;
       default:
-        return parseInt(this.rank);
+        return parseInt(this.#rank);
     }
   }
 }

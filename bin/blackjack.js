@@ -7,6 +7,6 @@ import Game from "../src/game.js";
 const deck = new Deck();
 const player = new Player();
 const dealer = new Player();
-const view = new CommandLine(dealer, player);
-const game = new Game(view, deck, dealer, player);
+const commandLine = new CommandLine(dealer, player);
+const game = new Game(commandLine, deck, dealer, player);
 game.start();
