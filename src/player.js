@@ -37,6 +37,10 @@ export default class Player {
     this.#bet *= 2;
   }
 
+  isBusted() {
+    return this.totalValue > 21;
+  }
+
   #calcTotalValue() {
     const values = this.#hand.map((card) => card.getValue());
     let totalValue = values.reduce((acc, curr) => acc + curr);

@@ -10,22 +10,30 @@ export default class CommandLine {
     this.#player = player;
   }
 
-  renderMessage(message) {
+  renderMessage(type) {
+    const messages = {
+      start: { message: "GAME START!!", color: "green" },
+      end: { message: "GAME ENDED!!", color: "green" },
+      win: { message: "YOU WIN!!", color: "blue" },
+      lose: { message: "YOU LOSE!!", color: "red" },
+      draw: { message: "DRAW!!", color: "yellow" },
+    };
+
+    const { message, color } = messages[type];
+
     console.log(
       styleText(
-        ["bold", "green", "italic"],
+        ["bold", "italic", color],
         `
   ******************************
-
   * ${message} *
-
   ******************************
         `
       )
     );
   }
 
-  async renderSelect(message, names, values) {
+  async renderOptions(message, names, values) {
     const choices = names.map((name, index) => ({
       name: name,
       value: values[index],
@@ -38,27 +46,32 @@ export default class CommandLine {
   }
 
   renderBetOptions() {
-    const betNames = ["$10", "$50", "$100"];
-    const betValues = [10, 50, 100];
-    return this.renderSelect("掛け金を選択してください", betNames, betValues);
+    const message = "掛け金を選択してください";
+    const names = ["$10", "$50", "$100"];
+    const values = [10, 50, 100];
+    return this.renderOptions(message, names, values);
   }
 
   renderActionOptions() {
-    const actionNames = ["HIT", "STAND"];
-    const actionValues = ["hit", "stand"];
+    const message = "行動を選択してください";
+    const names = ["HIT", "STAND"];
+    const values = ["hit", "stand"];
 
     if (
       this.#player.hand.length === 2 &&
       this.#player.credit >= this.#player.bet
     ) {
-      actionNames.push("DOUBLE");
-      actionValues.push("double");
+      names.push("DOUBLE");
+      values.push("double");
     }
-    return this.renderSelect(
-      "行動を選択してください",
-      actionNames,
-      actionValues
-    );
+    return this.renderOptions(message, names, values);
+  }
+
+  renderContinueOptions() {
+    const message = "ゲームを続けますか？";
+    const names = ["YES", "NO"];
+    const values = [true, false];
+    return this.renderOptions(message, names, values);
   }
 
   renderGameStatus() {
