@@ -26,6 +26,13 @@ export default class Player {
 
   setBetAmount(amount) {
     this.#bet = amount;
+  }
+
+  addCredit(amount) {
+    this.#credit += amount;
+  }
+
+  reduceCredit(amount) {
     this.#credit -= amount;
   }
 
@@ -37,12 +44,16 @@ export default class Player {
   double(card) {
     this.#hand.push(card);
     this.#calcTotalValue();
-    this.#credit -= this.#bet;
-    this.#bet *= 2;
+    this.reduceCredit(this.#bet);
+    this.setBetAmount(this.#bet * 2);
   }
 
   isBusted() {
     return this.totalValue > 21;
+  }
+
+  canDouble() {
+    return this.#hand.length === 2 && this.#credit >= this.#bet;
   }
 
   #calcTotalValue() {

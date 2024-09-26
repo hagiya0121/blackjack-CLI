@@ -28,8 +28,8 @@ export default class CommandLine {
   ******************************
   * ${message} *
   ******************************
-        `,
-      ),
+        `
+      )
     );
   }
 
@@ -57,10 +57,7 @@ export default class CommandLine {
     const names = ["HIT", "STAND"];
     const values = ["hit", "stand"];
 
-    if (
-      this.#player.hand.length === 2 &&
-      this.#player.credit >= this.#player.bet
-    ) {
+    if (this.#player.canDouble()) {
       names.push("DOUBLE");
       values.push("double");
     }
@@ -91,18 +88,18 @@ export default class CommandLine {
     const top = cards.map(() => "┌───────┐").join(" ");
     const rankTop = cards
       .map((card, i) =>
-        isHidden && i === 0 ? `│ ??    │` : `│ ${card.rank.padEnd(2)}    │`,
+        isHidden && i === 0 ? `│ ??    │` : `│ ${card.rank.padEnd(2)}    │`
       )
       .join(" ");
     const middle = cards.map(() => "│       │").join(" ");
     const suit = cards
       .map((card, i) =>
-        isHidden && i === 0 ? `│   ?   │` : `│   ${card.suit}   │`,
+        isHidden && i === 0 ? `│   ?   │` : `│   ${card.suit}   │`
       )
       .join(" ");
     const rankBottom = cards
       .map((card, i) =>
-        isHidden && i == 0 ? `│    ?? │` : `│    ${card.rank.padStart(2)} │`,
+        isHidden && i == 0 ? `│    ?? │` : `│    ${card.rank.padStart(2)} │`
       )
       .join(" ");
     const bottom = cards.map(() => "└───────┘").join(" ");

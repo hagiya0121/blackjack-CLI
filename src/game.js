@@ -19,7 +19,9 @@ export default class Game {
       this.#firstDealCards();
       await this.#startPlayerTurn();
       await this.#startDealerTurn();
-      this.#commandLine.renderMessage(this.#judgePlayerWin());
+      const result = this.#judgePlayerWin();
+      this.#updateCredit(result);
+      this.#commandLine.renderMessage(result);
       isContinue = await this.#commandLine.renderContinueOptions();
     }
     this.#commandLine.renderMessage("end");
@@ -28,6 +30,7 @@ export default class Game {
   async #handleBetAmount() {
     const betAmount = await this.#commandLine.renderBetOptions();
     this.#player.setBetAmount(betAmount);
+    this.#player.reduceCredit(betAmount);
   }
 
   #firstDealCards() {
@@ -79,5 +82,13 @@ export default class Game {
     if (this.#dealer.isBusted()) return "win";
     if (playerTotal === dealerTotal) return "draw";
     return playerTotal > dealerTotal ? "win" : "lose";
+  }
+
+  #updateCredit(result) {
+    if (result === "win") {
+      this.#player.addCredit(this.#player.bet * 2);
+    } else if (result === "draw") {
+      this.#player.addCredit(this.#player.bet);
+    }
   }
 }
