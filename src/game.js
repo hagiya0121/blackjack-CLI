@@ -12,40 +12,42 @@ export default class Game {
   }
 
   async start() {
-    this.#commandLine.renderMessage("start");
+    let isContinue = true;
+    while (isContinue) {
+      this.#commandLine.renderMessage("start");
+      await this.#handleBetAmount();
+      this.#firstDealCards();
+      await this.#startPlayerTurn();
+      await this.#startDealerTurn();
+      this.#commandLine.renderMessage(this.#judgePlayerWin());
+      isContinue = await this.#commandLine.renderContinueOptions();
+    }
+    this.#commandLine.renderMessage("end");
+  }
+
+  async #handleBetAmount() {
     const betAmount = await this.#commandLine.renderBetOptions();
     this.#player.setBetAmount(betAmount);
+  }
 
-    this.#dealer.hand.length = 0;
-    this.#player.hand.length = 0;
+  #firstDealCards() {
+    this.#dealer.resetHand();
+    this.#player.resetHand();
     for (let i = 0; i < 2; i++) {
-      await this.#dealer.hit(this.#deck.drawCard());
-      await this.#player.hit(this.#deck.drawCard());
+      this.#dealer.hit(this.#deck.drawCard());
+      this.#player.hit(this.#deck.drawCard());
     }
     this.#commandLine.renderGameStatus();
+  }
 
+  async #startPlayerTurn() {
     let isTurnActive = true;
-    while (isTurnActive && this.#player.totalValue < 21) {
+    while (isTurnActive) {
+      if (this.#player.isBusted()) return;
       const action = await this.#commandLine.renderActionOptions();
       isTurnActive = await this.#handlePlayerAction(action);
       this.#commandLine.renderGameStatus();
     }
-
-    if (this.#player.isBusted()) {
-      this.#commandLine.renderMessage("lose");
-      const isContinue = await this.#commandLine.renderContinueOptions();
-      this.#handleContinue(isContinue);
-      return;
-    }
-
-    while (this.#dealer.totalValue < 17) {
-      await this.#dealer.hit(this.#deck.drawCard());
-      this.#commandLine.renderGameStatus();
-    }
-
-    this.#commandLine.renderMessage(this.#judgeResult());
-    const isContinue = await this.#commandLine.renderContinueOptions();
-    this.#handleContinue(isContinue);
   }
 
   async #handlePlayerAction(action) {
@@ -61,21 +63,21 @@ export default class Game {
     }
   }
 
-  #judgeResult() {
+  async #startDealerTurn() {
+    if (this.#player.isBusted()) return;
+    while (this.#dealer.totalValue < 17) {
+      await this.#dealer.hit(this.#deck.drawCard());
+    }
+    this.#commandLine.renderGameStatus();
+  }
+
+  #judgePlayerWin() {
     const playerTotal = this.#player.totalValue;
     const dealerTotal = this.#dealer.totalValue;
 
-    if (dealerTotal > 21) return "win";
+    if (this.#player.isBusted()) return "lose";
+    if (this.#dealer.isBusted()) return "win";
     if (playerTotal === dealerTotal) return "draw";
     return playerTotal > dealerTotal ? "win" : "lose";
-  }
-
-  #handleContinue(isContinue) {
-    if (isContinue) {
-      this.start();
-    } else {
-      this.#commandLine.renderMessage("end");
-      process.exit(0);
-    }
   }
 }

@@ -20,6 +20,10 @@ export default class Player {
     return this.#totalValue;
   }
 
+  resetHand() {
+    this.#hand = [];
+  }
+
   setBetAmount(amount) {
     this.#bet = amount;
     this.#credit -= amount;
