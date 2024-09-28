@@ -28,8 +28,8 @@ export default class CommandLine {
   ******************************
   * ${message} *
   ******************************
-        `
-      )
+        `,
+      ),
     );
   }
 
@@ -75,7 +75,7 @@ export default class CommandLine {
     console.log(`CREDIT: ${this.#player.credit}     BET: ${this.#player.bet}`);
     console.log("----------------------------------");
     console.log("           DEALER");
-    console.log(this.renderCards(this.#dealer.hand, true));
+    console.log(this.renderCards(this.#dealer.hand));
     console.log(`TOTAL: ${this.#dealer.totalValue}`);
     console.log("----------------------------------");
     console.log("           PLAYER");
@@ -84,23 +84,15 @@ export default class CommandLine {
     console.log("----------------------------------");
   }
 
-  renderCards(cards, isHidden = false) {
+  renderCards(cards) {
     const top = cards.map(() => "┌───────┐").join(" ");
     const rankTop = cards
-      .map((card, i) =>
-        isHidden && i === 0 ? `│ ??    │` : `│ ${card.rank.padEnd(2)}    │`
-      )
+      .map((card) => `│ ${card.rank.padEnd(2)}    │`)
       .join(" ");
     const middle = cards.map(() => "│       │").join(" ");
-    const suit = cards
-      .map((card, i) =>
-        isHidden && i === 0 ? `│   ?   │` : `│   ${card.suit}   │`
-      )
-      .join(" ");
+    const suit = cards.map((card) => `│   ${card.suit}   │`).join(" ");
     const rankBottom = cards
-      .map((card, i) =>
-        isHidden && i == 0 ? `│    ?? │` : `│    ${card.rank.padStart(2)} │`
-      )
+      .map((card) => `│    ${card.rank.padStart(2)} │`)
       .join(" ");
     const bottom = cards.map(() => "└───────┘").join(" ");
 

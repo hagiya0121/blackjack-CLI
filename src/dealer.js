@@ -21,6 +21,11 @@ export default class Dealer {
     return this.#deck.drawCard();
   }
 
+  reverseFirstCard() {
+    this.#hand[0].reverseCard();
+    this.#calcTotalValue();
+  }
+
   resetHand() {
     this.#hand = [];
   }

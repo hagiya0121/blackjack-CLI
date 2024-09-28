@@ -3,7 +3,7 @@ export default class Game {
   #dealer = null;
   #player = null;
 
-  constructor(commandLine, deck, dealer, player) {
+  constructor(commandLine, dealer, player) {
     this.#commandLine = commandLine;
     this.#dealer = dealer;
     this.#player = player;
@@ -33,6 +33,7 @@ export default class Game {
       this.#dealer.hit(this.#dealer.dealCard());
       this.#player.hit(this.#dealer.dealCard());
     }
+    this.#dealer.reverseFirstCard();
     this.#commandLine.renderGameStatus();
   }
 
@@ -60,6 +61,7 @@ export default class Game {
   }
 
   #startDealerTurn() {
+    this.#dealer.reverseFirstCard();
     if (this.#player.isBusted()) return;
     this.#dealer.takeAction();
     this.#commandLine.renderGameStatus();
