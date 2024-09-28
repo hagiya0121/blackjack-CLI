@@ -1,15 +1,12 @@
-export default class Player {
-  #bet = 0;
-  #credit = 1000;
+export default class Dealer {
+  #deck = null;
   #hand = [];
   #totalValue = 0;
 
-  get bet() {
-    return this.#bet;
-  }
-
-  get credit() {
-    return this.#credit;
+  constructor(deck) {
+    this.#deck = deck;
+    this.#hand = [];
+    this.#totalValue = 0;
   }
 
   get hand() {
@@ -20,13 +17,12 @@ export default class Player {
     return this.#totalValue;
   }
 
-  resetHand() {
-    this.#hand = [];
+  dealCard() {
+    return this.#deck.drawCard();
   }
 
-  betting(amount) {
-    this.#bet = amount;
-    this.#credit -= amount;
+  resetHand() {
+    this.#hand = [];
   }
 
   hit(card) {
@@ -34,26 +30,13 @@ export default class Player {
     this.#calcTotalValue();
   }
 
-  double(card) {
-    this.#hand.push(card);
-    this.#calcTotalValue();
-    this.#credit -= this.#bet;
-    this.#bet *= 2;
-  }
-
   isBusted() {
     return this.totalValue > 21;
   }
 
-  canDouble() {
-    return this.#hand.length === 2 && this.#credit >= this.#bet;
-  }
-
-  updateCredit(result) {
-    if (result === "win") {
-      this.#credit += this.bet * 2;
-    } else if (result === "draw") {
-      this.#credit += this.bet;
+  takeAction() {
+    while (this.#totalValue < 17) {
+      this.hit(this.dealCard());
     }
   }
 
