@@ -21,6 +21,7 @@ export default class Game {
       this.#startDealerTurn();
       const result = this.#judgePlayerWin();
       this.#player.updateCredit(result);
+      if (this.#player.hasNoCredit()) break;
       this.#commandLine.renderMessage(result);
       isContinue = await this.#commandLine.renderContinueOptions();
     }

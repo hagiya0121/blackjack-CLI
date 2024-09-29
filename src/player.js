@@ -49,6 +49,10 @@ export default class Player {
     return this.#hand.length === 2 && this.#credit >= this.#bet;
   }
 
+  hasNoCredit() {
+    return this.#credit === 0;
+  }
+
   updateCredit(result) {
     if (result === "win") {
       this.#credit += this.bet * 2;
