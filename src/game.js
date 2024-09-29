@@ -13,7 +13,8 @@ export default class Game {
     let isContinue = true;
     while (isContinue) {
       this.#commandLine.renderMessage("start");
-      const betAmount = await this.#commandLine.renderBetOptions();
+      const options = this.#createBetOptions();
+      const betAmount = await this.#commandLine.renderBetOptions(options);
       this.#player.betting(betAmount);
       this.#firstDealCards();
       await this.#startPlayerTurn();
@@ -24,6 +25,13 @@ export default class Game {
       isContinue = await this.#commandLine.renderContinueOptions();
     }
     this.#commandLine.renderMessage("end");
+  }
+
+  #createBetOptions() {
+    const percentages = [0.1, 0.25, 0.5, 1];
+    return percentages.map(
+      (per) => Math.round((this.#player.credit * per) / 10) * 10
+    );
   }
 
   #firstDealCards() {

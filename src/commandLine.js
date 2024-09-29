@@ -29,47 +29,47 @@ export default class CommandLine {
           * ${message}
           * YOUR CREDIT: $${this.#player.credit}
         ************************
-        `
-      )
+        `,
+      ),
     );
   }
 
-  async renderOptions(message, names, values) {
-    const choices = names.map((name, index) => ({
-      name: name,
-      value: values[index],
-    }));
-
+  async renderOptions(message, choices) {
     return select({
       message: message,
       choices: choices,
     });
   }
 
-  renderBetOptions() {
+  renderBetOptions(options) {
     const message = "掛け金を選択してください";
-    const names = ["$10", "$50", "$100"];
-    const values = [10, 50, 100];
-    return this.renderOptions(message, names, values);
+    const choices = options.map((value) => ({
+      name: `$${value}`,
+      value: value,
+    }));
+    return this.renderOptions(message, choices);
   }
 
   renderActionOptions() {
     const message = "行動を選択してください";
-    const names = ["HIT", "STAND"];
-    const values = ["hit", "stand"];
+    const choices = [
+      { name: "HIT", value: "hit" },
+      { name: "STAND", value: "stand" },
+    ];
 
     if (this.#player.canDouble()) {
-      names.push("DOUBLE");
-      values.push("double");
+      choices.push({ name: "DOUBLE", value: "double" });
     }
-    return this.renderOptions(message, names, values);
+    return this.renderOptions(message, choices);
   }
 
   renderContinueOptions() {
     const message = "ゲームを続けますか？";
-    const names = ["YES", "NO"];
-    const values = [true, false];
-    return this.renderOptions(message, names, values);
+    const choices = [
+      { name: "YES", value: true },
+      { name: "NO", value: false },
+    ];
+    return this.renderOptions(message, choices);
   }
 
   renderGameStatus() {
