@@ -25,11 +25,12 @@ export default class CommandLine {
       styleText(
         ["bold", "italic", color],
         `
-  ******************************
-  * ${message} *
-  ******************************
-        `,
-      ),
+        ************************
+          * ${message}
+          * YOUR CREDIT: $${this.#player.credit}
+        ************************
+        `
+      )
     );
   }
 
@@ -72,15 +73,14 @@ export default class CommandLine {
   }
 
   renderGameStatus() {
+    console.clear();
     console.log(`CREDIT: ${this.#player.credit}     BET: ${this.#player.bet}`);
     console.log("----------------------------------");
-    console.log("           DEALER");
+    console.log(`           DEALER        TOTAL: ${this.#dealer.totalValue}`);
     console.log(this.renderCards(this.#dealer.hand));
-    console.log(`TOTAL: ${this.#dealer.totalValue}`);
     console.log("----------------------------------");
-    console.log("           PLAYER");
+    console.log(`           PLAYER        TOTAL: ${this.#player.totalValue}`);
     console.log(this.renderCards(this.#player.hand));
-    console.log(`TOTAL: ${this.#player.totalValue}`);
     console.log("----------------------------------");
   }
 
