@@ -53,6 +53,11 @@ export default class Player {
     return this.#credit === 0;
   }
 
+  createBetOptions() {
+    const percentages = [0.1, 0.25, 0.5, 1];
+    return percentages.map((per) => Math.round((this.#credit * per) / 10) * 10);
+  }
+
   updateCredit(result) {
     if (result === "win") {
       this.#credit += this.bet * 2;
