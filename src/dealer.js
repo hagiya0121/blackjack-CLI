@@ -45,6 +45,12 @@ export default class Dealer {
     }
   }
 
+  resetDeckIfLow() {
+    if (this.#deck.remainingCards() < 10) {
+      this.#deck.reset();
+    }
+  }
+
   #calcTotalValue() {
     const values = this.#hand.map((card) => card.getValue());
     let totalValue = values.reduce((acc, curr) => acc + curr);

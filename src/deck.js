@@ -29,6 +29,14 @@ export default class Deck {
     return this.#cards.splice(randomIndex, 1)[0];
   }
 
+  reset() {
+    this.#cards = this.#createCards();
+  }
+
+  remainingCards() {
+    return this.#cards.length;
+  }
+
   #createCards() {
     return SUITS.flatMap((suit) => {
       return RANKS.map((rank) => new Card(suit, rank));

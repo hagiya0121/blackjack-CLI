@@ -28,9 +28,11 @@ export default class Game {
     const betAmount = await this.#commandLine.renderBetOptions(options);
     this.#player.betting(betAmount);
     this.#firstDealCards();
+    this.#commandLine.renderGameStatus();
   }
 
   #firstDealCards() {
+    this.#dealer.resetDeckIfLow();
     this.#dealer.resetHand();
     this.#player.resetHand();
     for (let i = 0; i < 2; i++) {
@@ -38,7 +40,16 @@ export default class Game {
       this.#player.hit(this.#dealer.dealCard());
     }
     this.#dealer.reverseFirstCard();
-    this.#commandLine.renderGameStatus();
+  }
+
+  async #startPlayerTurn() {
+    let isTurnActive = true;
+    while (isTurnActive) {
+      if (this.#player.isBusted()) return;
+      const action = await this.#commandLine.renderActionOptions();
+      isTurnActive = await this.#handlePlayerAction(action);
+      this.#commandLine.renderGameStatus();
+    }
   }
 
   async #handlePlayerAction(action) {
@@ -54,21 +65,17 @@ export default class Game {
     }
   }
 
-  async #startPlayerTurn() {
-    let isTurnActive = true;
-    while (isTurnActive) {
-      if (this.#player.isBusted()) return;
-      const action = await this.#commandLine.renderActionOptions();
-      isTurnActive = await this.#handlePlayerAction(action);
-      this.#commandLine.renderGameStatus();
-    }
-  }
-
   #startDealerTurn() {
     this.#dealer.reverseFirstCard();
     if (this.#player.isBusted()) return;
     this.#dealer.takeAction();
     this.#commandLine.renderGameStatus();
+  }
+
+  #processResult() {
+    const result = this.#judgePlayerWin();
+    this.#player.updateCredit(result);
+    this.#commandLine.renderMessage(result);
   }
 
   #judgePlayerWin() {
@@ -79,11 +86,5 @@ export default class Game {
     if (this.#dealer.isBusted()) return "win";
     if (playerTotal === dealerTotal) return "draw";
     return playerTotal > dealerTotal ? "win" : "lose";
-  }
-
-  #processResult() {
-    const result = this.#judgePlayerWin();
-    this.#player.updateCredit(result);
-    this.#commandLine.renderMessage(result);
   }
 }
