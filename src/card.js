@@ -9,16 +9,20 @@ export default class Card {
     this.#isHidden = false;
   }
 
-  get suit() {
+  displaySuit() {
     return this.#isHidden ? "?" : this.#suit;
   }
 
-  get rank() {
+  displayRank() {
     return this.#isHidden ? "??" : this.#rank;
   }
 
-  reverseCard() {
-    this.#isHidden = !this.#isHidden;
+  hideCard() {
+    this.#isHidden = true;
+  }
+
+  openCard() {
+    this.#isHidden = false;
   }
 
   getValue() {

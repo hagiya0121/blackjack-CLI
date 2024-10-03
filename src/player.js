@@ -1,8 +1,9 @@
+import Hand from "./hand.js";
+
 export default class Player {
   #bet = 0;
   #credit = 1000;
-  #hand = [];
-  #totalValue = 0;
+  #hand = null;
 
   get bet() {
     return this.#bet;
@@ -16,12 +17,17 @@ export default class Player {
     return this.#hand;
   }
 
-  get totalValue() {
-    return this.#totalValue;
+  getTotalValue() {
+    return this.#hand.totalValue;
   }
 
-  resetHand() {
-    this.#hand = [];
+  initializeHand(cards) {
+    this.#hand = new Hand(cards);
+  }
+
+  createBetOptions() {
+    const percentages = [0.1, 0.25, 0.5, 1];
+    return percentages.map((per) => Math.round((this.#credit * per) / 10) * 10);
   }
 
   betting(amount) {
@@ -30,32 +36,25 @@ export default class Player {
   }
 
   hit(card) {
-    this.#hand.push(card);
-    this.#calcTotalValue();
+    this.#hand.addCard(card);
   }
 
   double(card) {
-    this.#hand.push(card);
-    this.#calcTotalValue();
+    this.#hand.addCard(card);
     this.#credit -= this.#bet;
     this.#bet *= 2;
   }
 
   isBusted() {
-    return this.totalValue > 21;
+    return this.#hand.totalValue > 21;
   }
 
   canDouble() {
-    return this.#hand.length === 2 && this.#credit >= this.#bet;
+    return this.#hand.countCards() == 2 && this.#credit >= this.#bet;
   }
 
   hasNoCredit() {
     return this.#credit === 0;
-  }
-
-  createBetOptions() {
-    const percentages = [0.1, 0.25, 0.5, 1];
-    return percentages.map((per) => Math.round((this.#credit * per) / 10) * 10);
   }
 
   updateCredit(result) {
@@ -64,16 +63,5 @@ export default class Player {
     } else if (result === "draw") {
       this.#credit += this.bet;
     }
-  }
-
-  #calcTotalValue() {
-    const values = this.#hand.map((card) => card.getValue());
-    let totalValue = values.reduce((acc, curr) => acc + curr);
-    let aceCount = values.filter((value) => value === 11).length;
-    while (totalValue > 21 && aceCount > 0) {
-      totalValue -= 10;
-      aceCount--;
-    }
-    this.#totalValue = totalValue;
   }
 }

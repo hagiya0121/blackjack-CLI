@@ -1,38 +1,33 @@
+import Hand from "./hand.js";
+
 export default class Dealer {
   #deck = null;
-  #hand = [];
-  #totalValue = 0;
+  #hand = null;
 
   constructor(deck) {
     this.#deck = deck;
-    this.#hand = [];
-    this.#totalValue = 0;
   }
 
   get hand() {
     return this.#hand;
   }
 
-  get totalValue() {
-    return this.#totalValue;
+  getTotalValue() {
+    return this.#hand.totalValue;
+  }
+
+  initializeHand(cards) {
+    this.#hand = new Hand(cards);
   }
 
   dealCard() {
     return this.#deck.drawCard();
   }
 
-  reverseFirstCard() {
-    this.#hand[0].reverseCard();
-    this.#calcTotalValue();
-  }
-
-  resetHand() {
-    this.#hand = [];
-  }
-
-  hit(card) {
-    this.#hand.push(card);
-    this.#calcTotalValue();
+  dealOpeningHand(player) {
+    const cards = Array.from({ length: 2 }, () => this.dealCard());
+    player.initializeHand(cards);
+    if (player === this) this.#hand.hideFirstCard();
   }
 
   isBusted() {
@@ -40,8 +35,9 @@ export default class Dealer {
   }
 
   takeAction() {
-    while (this.#totalValue < 17) {
-      this.hit(this.dealCard());
+    this.#hand.openFirstCard();
+    while (this.#hand.totalValue < 17) {
+      this.#hand.addCard(this.dealCard());
     }
   }
 
@@ -49,16 +45,5 @@ export default class Dealer {
     if (this.#deck.remainingCards() < 10) {
       this.#deck.reset();
     }
-  }
-
-  #calcTotalValue() {
-    const values = this.#hand.map((card) => card.getValue());
-    let totalValue = values.reduce((acc, curr) => acc + curr);
-    let aceCount = values.filter((value) => value === 11).length;
-    while (totalValue > 21 && aceCount > 0) {
-      totalValue -= 10;
-      aceCount--;
-    }
-    this.#totalValue = totalValue;
   }
 }

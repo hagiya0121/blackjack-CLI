@@ -76,23 +76,27 @@ export default class CommandLine {
     console.clear();
     console.log(`CREDIT: ${this.#player.credit}     BET: ${this.#player.bet}`);
     console.log("----------------------------------");
-    console.log(`           DEALER        TOTAL: ${this.#dealer.totalValue}`);
-    console.log(this.renderCards(this.#dealer.hand));
+    console.log(
+      `           DEALER        TOTAL: ${this.#dealer.getTotalValue()}`,
+    );
+    console.log(this.renderCards(this.#dealer.hand.cards));
     console.log("----------------------------------");
-    console.log(`           PLAYER        TOTAL: ${this.#player.totalValue}`);
-    console.log(this.renderCards(this.#player.hand));
+    console.log(
+      `           PLAYER        TOTAL: ${this.#player.getTotalValue()}`,
+    );
+    console.log(this.renderCards(this.#player.hand.cards));
     console.log("----------------------------------");
   }
 
   renderCards(cards) {
     const top = cards.map(() => "┌───────┐").join(" ");
     const rankTop = cards
-      .map((card) => `│ ${card.rank.padEnd(2)}    │`)
+      .map((card) => `│ ${card.displayRank().padEnd(2)}    │`)
       .join(" ");
     const middle = cards.map(() => "│       │").join(" ");
-    const suit = cards.map((card) => `│   ${card.suit}   │`).join(" ");
+    const suit = cards.map((card) => `│   ${card.displaySuit()}   │`).join(" ");
     const rankBottom = cards
-      .map((card) => `│    ${card.rank.padStart(2)} │`)
+      .map((card) => `│    ${card.displayRank().padStart(2)} │`)
       .join(" ");
     const bottom = cards.map(() => "└───────┘").join(" ");
 

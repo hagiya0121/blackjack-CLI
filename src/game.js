@@ -33,13 +33,8 @@ export default class Game {
 
   #firstDealCards() {
     this.#dealer.resetDeckIfLow();
-    this.#dealer.resetHand();
-    this.#player.resetHand();
-    for (let i = 0; i < 2; i++) {
-      this.#dealer.hit(this.#dealer.dealCard());
-      this.#player.hit(this.#dealer.dealCard());
-    }
-    this.#dealer.reverseFirstCard();
+    this.#dealer.dealOpeningHand(this.#player);
+    this.#dealer.dealOpeningHand(this.#dealer);
   }
 
   async #startPlayerTurn() {
@@ -66,7 +61,6 @@ export default class Game {
   }
 
   #startDealerTurn() {
-    this.#dealer.reverseFirstCard();
     if (this.#player.isBusted()) return;
     this.#dealer.takeAction();
     this.#commandLine.renderGameStatus();
