@@ -6,14 +6,13 @@ export default class Card {
   constructor(suit, rank) {
     this.#suit = suit;
     this.#rank = rank;
-    this.#isHidden = false;
   }
 
-  displaySuit() {
+  getSuit() {
     return this.#isHidden ? "?" : this.#suit;
   }
 
-  displayRank() {
+  getRank() {
     return this.#isHidden ? "??" : this.#rank;
   }
 

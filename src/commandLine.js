@@ -91,12 +91,12 @@ export default class CommandLine {
   renderCards(cards) {
     const top = cards.map(() => "┌───────┐").join(" ");
     const rankTop = cards
-      .map((card) => `│ ${card.displayRank().padEnd(2)}    │`)
+      .map((card) => `│ ${card.getRank().padEnd(2)}    │`)
       .join(" ");
     const middle = cards.map(() => "│       │").join(" ");
-    const suit = cards.map((card) => `│   ${card.displaySuit()}   │`).join(" ");
+    const suit = cards.map((card) => `│   ${card.getSuit()}   │`).join(" ");
     const rankBottom = cards
-      .map((card) => `│    ${card.displayRank().padStart(2)} │`)
+      .map((card) => `│    ${card.getRank().padStart(2)} │`)
       .join(" ");
     const bottom = cards.map(() => "└───────┘").join(" ");
 

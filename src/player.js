@@ -1,5 +1,7 @@
 import Hand from "./hand.js";
 
+const PERCENTAGES = [0.1, 0.25, 0.5, 1];
+
 export default class Player {
   #bet = 0;
   #credit = 1000;
@@ -18,7 +20,7 @@ export default class Player {
   }
 
   getTotalValue() {
-    return this.#hand.totalValue;
+    return this.#hand.calcTotalValue();
   }
 
   initializeHand(cards) {
@@ -26,8 +28,7 @@ export default class Player {
   }
 
   createBetOptions() {
-    const percentages = [0.1, 0.25, 0.5, 1];
-    return percentages.map((per) => Math.round((this.#credit * per) / 10) * 10);
+    return PERCENTAGES.map((per) => Math.round((this.#credit * per) / 10) * 10);
   }
 
   betting(amount) {
@@ -46,7 +47,7 @@ export default class Player {
   }
 
   isBusted() {
-    return this.#hand.totalValue > 21;
+    return this.getTotalValue() > 21;
   }
 
   canDouble() {

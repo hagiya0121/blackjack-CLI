@@ -12,7 +12,7 @@ export default class Game {
   async start() {
     let isContinue = true;
     while (isContinue) {
-      await this.#startNewTurn();
+      await this.#initializeNewTurn();
       await this.#startPlayerTurn();
       this.#startDealerTurn();
       this.#processResult();
@@ -22,7 +22,7 @@ export default class Game {
     this.#commandLine.renderMessage("end");
   }
 
-  async #startNewTurn() {
+  async #initializeNewTurn() {
     this.#commandLine.renderMessage("start");
     const options = this.#player.createBetOptions();
     const betAmount = await this.#commandLine.renderBetOptions(options);
@@ -39,15 +39,14 @@ export default class Game {
 
   async #startPlayerTurn() {
     let isTurnActive = true;
-    while (isTurnActive) {
-      if (this.#player.isBusted()) return;
+    while (isTurnActive && !this.#player.isBusted()) {
       const action = await this.#commandLine.renderActionOptions();
-      isTurnActive = await this.#handlePlayerAction(action);
+      isTurnActive = await this.#executePlayerAction(action);
       this.#commandLine.renderGameStatus();
     }
   }
 
-  async #handlePlayerAction(action) {
+  async #executePlayerAction(action) {
     switch (action) {
       case "hit":
         this.#player.hit(this.#dealer.dealCard());
@@ -67,14 +66,14 @@ export default class Game {
   }
 
   #processResult() {
-    const result = this.#judgePlayerWin();
+    const result = this.#judgeGameResult();
     this.#player.updateCredit(result);
     this.#commandLine.renderMessage(result);
   }
 
-  #judgePlayerWin() {
-    const playerTotal = this.#player.totalValue;
-    const dealerTotal = this.#dealer.totalValue;
+  #judgeGameResult() {
+    const playerTotal = this.#player.getTotalValue();
+    const dealerTotal = this.#dealer.getTotalValue();
 
     if (this.#player.isBusted()) return "lose";
     if (this.#dealer.isBusted()) return "win";

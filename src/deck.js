@@ -38,8 +38,6 @@ export default class Deck {
   }
 
   #createCards() {
-    return SUITS.flatMap((suit) => {
-      return RANKS.map((rank) => new Card(suit, rank));
-    });
+    return SUITS.flatMap((suit) => RANKS.map((rank) => new Card(suit, rank)));
   }
 }

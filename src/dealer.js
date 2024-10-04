@@ -13,7 +13,7 @@ export default class Dealer {
   }
 
   getTotalValue() {
-    return this.#hand.totalValue;
+    return this.#hand.calcTotalValue();
   }
 
   initializeHand(cards) {
@@ -24,19 +24,19 @@ export default class Dealer {
     return this.#deck.drawCard();
   }
 
-  dealOpeningHand(player) {
+  dealOpeningHand(role) {
     const cards = Array.from({ length: 2 }, () => this.dealCard());
-    player.initializeHand(cards);
-    if (player === this) this.#hand.hideFirstCard();
+    role.initializeHand(cards);
+    if (role === this) this.#hand.hideFirstCard();
   }
 
   isBusted() {
-    return this.totalValue > 21;
+    return this.getTotalValue() > 21;
   }
 
   takeAction() {
     this.#hand.openFirstCard();
-    while (this.#hand.totalValue < 17) {
+    while (this.getTotalValue() < 17) {
       this.#hand.addCard(this.dealCard());
     }
   }
