@@ -23,13 +23,8 @@ export default class CommandLine {
 
     console.log(
       styleText(
-        ["bold", "italic", color],
-        `
-        ************************
-          * ${message}
-          * YOUR CREDIT: $${this.#player.credit}
-        ************************
-        `,
+        ["bold", "italic", "inverse", color],
+        ` * ${message} YOUR CREDIT: $${this.#player.credit} * `,
       ),
     );
   }
