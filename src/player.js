@@ -46,12 +46,16 @@ export default class Player {
     this.#bet *= 2;
   }
 
+  isBlackjack() {
+    return this.#hand.hasInitialCards() && this.getTotalValue() == 21;
+  }
+
   isBusted() {
     return this.getTotalValue() > 21;
   }
 
   canDouble() {
-    return this.#hand.countCards() == 2 && this.#credit >= this.#bet;
+    return this.#hand.hasInitialCards() && this.#credit >= this.#bet;
   }
 
   hasNoCredit() {
@@ -59,7 +63,9 @@ export default class Player {
   }
 
   updateCredit(result) {
-    if (result === "win") {
+    if (result == "blackjack") {
+      this.#credit += this.bet * 2.5;
+    } else if (result === "win") {
       this.#credit += this.bet * 2;
     } else if (result === "draw") {
       this.#credit += this.bet;

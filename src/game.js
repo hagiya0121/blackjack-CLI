@@ -12,7 +12,7 @@ export default class Game {
   async start() {
     let isContinue = true;
     while (isContinue) {
-      await this.#initializeNewTurn();
+      await this.#setupTurn();
       await this.#startPlayerTurn();
       this.#startDealerTurn();
       this.#processResult();
@@ -22,7 +22,7 @@ export default class Game {
     this.#commandLine.renderMessage("end");
   }
 
-  async #initializeNewTurn() {
+  async #setupTurn() {
     this.#commandLine.renderMessage("start");
     const options = this.#player.createBetOptions();
     const betAmount = await this.#commandLine.renderBetOptions(options);
@@ -38,6 +38,8 @@ export default class Game {
   }
 
   async #startPlayerTurn() {
+    if (this.#player.isBlackjack()) return;
+
     let isTurnActive = true;
     while (isTurnActive && !this.#player.isBusted()) {
       const action = await this.#commandLine.renderActionOptions();
@@ -60,7 +62,8 @@ export default class Game {
   }
 
   #startDealerTurn() {
-    if (this.#player.isBusted()) return;
+    if (this.#player.isBlackjack() || this.#player.isBusted()) return;
+
     this.#dealer.takeAction();
     this.#commandLine.renderGameStatus();
   }
@@ -75,6 +78,7 @@ export default class Game {
     const playerTotal = this.#player.getTotalValue();
     const dealerTotal = this.#dealer.getTotalValue();
 
+    if (this.#player.isBlackjack()) return "blackjack";
     if (this.#player.isBusted()) return "lose";
     if (this.#dealer.isBusted()) return "win";
     if (playerTotal === dealerTotal) return "draw";

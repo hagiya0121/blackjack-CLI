@@ -21,8 +21,8 @@ export default class Hand {
     this.#cards.push(card);
   }
 
-  countCards() {
-    return this.#cards.length;
+  hasInitialCards() {
+    return this.#cards.length === 2;
   }
 
   calcTotalValue() {

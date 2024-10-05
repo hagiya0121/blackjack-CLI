@@ -17,6 +17,7 @@ export default class CommandLine {
       win: { message: "YOU WIN!!", color: "blue" },
       lose: { message: "YOU LOSE!!", color: "red" },
       draw: { message: "DRAW!!", color: "yellow" },
+      blackjack: { message: "BLACKJACK!!", color: "blue" },
     };
 
     const { message, color } = messages[type];
