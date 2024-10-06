@@ -1,13 +1,13 @@
-# blackjack-cli
+# blackjack-console
 
-ターミナル上で、ブラックジャックを遊べるnpmです。
+コンソール上で、ブラックジャックを遊べるnpmです。
 ![image](https://github.com/user-attachments/assets/773d390a-943c-4a4a-a6af-116a78f43461)
 
 ## 使用方法
 
 ### インストール
 
-`npm install blackjack-cli`
+`npm install blackjack-console`
 
 ### ゲームを開始する
 
