@@ -5,13 +5,9 @@
 
 ## 使用方法
 
-### インストール
-
-`npx blackjack-console`
-
 ### ゲームを開始する
 
-`npx blackjack`
+`npx blackjack-console`
 
 ## ブラックジャックのルール
 
