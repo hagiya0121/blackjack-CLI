@@ -1,8 +1,8 @@
 {
   "name": "blackjack-cli",
   "version": "1.0.0",
-  "description": "",
-  "main": "./bin/blackjack.js",
+  "description": "CLI上でブラックジャックを遊べます",
+  "main": "bin/blackjack.js",
   "type": "module",
   "bin": {
     "blackjack": "./bin/blackjack.js"
@@ -15,8 +15,12 @@
     "type": "git",
     "url": "git+https://github.com/hagiya0121/blackjack-cli.git"
   },
+  "keywords": [
+    "blackjack",
+    "game"
+  ],
   "author": "hagiya",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/hagiya0121/blackjack-cli/issues"
   },
