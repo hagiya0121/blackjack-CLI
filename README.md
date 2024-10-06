@@ -7,11 +7,11 @@
 
 ### インストール
 
-`npm install blackjack-console`
+`npx blackjack-console`
 
 ### ゲームを開始する
 
-`blackjack`
+`npx blackjack`
 
 ## ブラックジャックのルール
 
