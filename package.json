@@ -1,6 +1,6 @@
 {
   "name": "blackjack-console",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "コンソール上でブラックジャックを遊べます",
   "main": "bin/blackjack.js",
   "type": "module",
