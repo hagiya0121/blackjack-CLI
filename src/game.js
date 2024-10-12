@@ -41,7 +41,7 @@ export default class Game {
     if (this.#player.isBlackjack()) return;
 
     let isTurnActive = true;
-    while (isTurnActive && !this.#player.isBusted()) {
+    while (isTurnActive && this.#player.getTotalValue() < 21) {
       const action = await this.#commandLine.renderActionOptions();
       isTurnActive = await this.#executePlayerAction(action);
       this.#commandLine.renderGameStatus();
