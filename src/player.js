@@ -28,7 +28,12 @@ export default class Player {
   }
 
   createBetOptions() {
-    return PERCENTAGES.map((per) => Math.round((this.#credit * per) / 10) * 10);
+    const bets = PERCENTAGES.map((per) => {
+      const bet = Math.round((this.#credit * per) / 10) * 10;
+      return Math.max(bet, 10);
+    });
+
+    return [...new Set(bets)];
   }
 
   betting(amount) {
